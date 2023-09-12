@@ -5,16 +5,16 @@ import {
     changePlayBackRate,
     getCurrentTabs,
     getVideoPlayBackRate,
-    handleSkipClick,
+    addSeconds,
 } from './util.js';
 
 const Popup = () => {
 
     const [playbackRate, setPlaybackRate] = useState(1);
+    const [skipSeconds, setSkipSeconds] = useState(85);
 
     useEffect(() => {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            console.log("Execute Script");
             chrome.scripting.executeScript({
                 target: { tabId: tabs[0].id },
                 func: getVideoPlayBackRate
@@ -38,6 +38,21 @@ const Popup = () => {
         })();
     }, [playbackRate]);
 
+    const handleSkipClick = async function () {
+        console.log("click!");
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            console.log(tabs[0]);
+            chrome.scripting.executeScript({
+                target: { tabId: tabs[0].id },
+                func: addSeconds,
+                args: [parseInt(skipSeconds)]
+            });
+        });
+    };
+    const handleSkipSecondsChange = useCallback((event) => {
+        setSkipSeconds(event.target.value);
+    }, []);
+
     const handleRateInputChange = useCallback((event) => {
         setPlaybackRate(event.target.value);
     }, []);
@@ -51,7 +66,7 @@ const Popup = () => {
             <h1>Video Controller</h1>
             <div>
                 <button type="button" onClick={handleSkipClick}>Skip</button>
-                <input type="number" value={85} />
+                <input type="number" onChange={handleSkipSecondsChange} value={skipSeconds} />
                 seconds
             </div>
             <label>Playback Rate</label>
