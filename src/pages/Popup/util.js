@@ -64,7 +64,6 @@ export async function handleRateRangeChange(e) {
     }
 }
 
-
 export async function handleRateInputChange(e) {
     setPlayBackRateRange(getPlayBackRateInput())
     var tabs = await getCurrentTabs();
@@ -77,7 +76,6 @@ export async function handleRateInputChange(e) {
     }
 }
 
-
 export function setDefaultPlayBackRate() {
     var streams = document.getElementsByTagName('video');
     for (var i = 0; i < streams.length; i++) {
@@ -89,40 +87,3 @@ export function setDefaultPlayBackRate() {
     setPlayBackRateInput(16);
     console.log(document.getElementById('rate_input'));
 }
-
-// document.addEventListener('DOMContentLoaded', async function () {
-//     const skipButton = document.getElementById('skip');
-//     skipButton.addEventListener('click', handleSkipClick);
-
-//     const rateInput = document.getElementById('rate_input');
-//     rateInput.addEventListener('change', handleRateInputChange);
-
-//     const rateRange = document.getElementById('rate_Range');
-//     rateRange.addEventListener('change', handleRateRangeChange);
-// });
-
-export const getVideoPlayBackRate = () => {
-    var streams = document.getElementsByTagName('video');
-    let rate = 1.0;
-    for (var i = 0; i < streams.length; i++) {
-        if (streams[i].readyState === 4) {
-            rate = streams[i].playbackRate;
-        }
-    }
-    console.log("getVideoPlayBackRate() = " + rate);
-    return rate;
-}
-
-// chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-//     console.log("Execute Script");
-//     chrome.scripting.executeScript({
-//         target: { tabId: tabs[0].id },
-//         func: getVideoPlayBackRate
-//     }, (result) => {
-//         console.log("Recv result = " + result[0].result);
-//         setPlayBackRateInput(result[0].result)
-//         setPlayBackRateRange(result[0].result)
-//     });
-// });
-
-
