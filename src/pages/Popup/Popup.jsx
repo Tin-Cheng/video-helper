@@ -8,6 +8,7 @@ import {
 } from './util.js';
 
 import Jumper from '../../components/Jumper/Jumper';
+import Looper from '../../components/Looper/Looper';
 
 const Popup = () => {
     const [playbackRate, setPlaybackRate] = useState(1);
@@ -94,6 +95,7 @@ const Popup = () => {
                     setPreservesPitchState(event.target.checked);
                 }} />
             </label>
+            <Looper />
         </div>
     );
 };
