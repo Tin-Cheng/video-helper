@@ -9,7 +9,6 @@ import styles from './Looper.module.css';
 
 const Looper = () => {
     const [enableLoopState, setEnableLoopState] = useState(false);
-    const [editingVideoState, setEditingVideoState] = useState(false);
     const [startTime, setStartTime] = useState('0');
     const [endTime, setEndTime] = useState('0');
 
@@ -20,6 +19,47 @@ const Looper = () => {
     const handleEndTimeChange = useCallback((event) => {
         setEndTime(event.target.value);
     }, []);
+
+    const handleEnableLoopStateChange = useCallback((event) => {
+        setEnableLoopState(event.target.checked);
+    }, []);
+
+    const addVideoListenerFunction = (startTime, endTime, enableLoopState) => {
+        startTime = parseFloat(startTime);
+        endTime = parseFloat(endTime);
+        if (!enableLoopState || startTime >= endTime) {
+            VideoListenerLoop = () => { };
+            return;
+        }
+        VideoListenerLoop = () => {
+            const videoEls = document.getElementsByTagName('video');
+            for (let i = 0; i < videoEls.length; i++) {
+                if (videoEls[i].readyState >= 2) {
+                    if (videoEls[i].currentTime < startTime || videoEls[i].currentTime > endTime) {
+                        videoEls[i].currentTime = startTime;
+                    }
+                }
+            }
+            requestAnimationFrame(VideoListenerLoop);
+        };
+        VideoListenerLoop();
+    }
+
+    useEffect(() => {
+        const addVideoListenerToTab = async () => {
+            console.log('add to tab', startTime, endTime, enableLoopState);
+            const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+            for (let i = 0; i < tabs.length; i++) {
+                chrome.scripting.executeScript({
+                    target: { tabId: tabs[i].id },
+                    func: addVideoListenerFunction,
+                    args: [startTime, endTime, enableLoopState]
+                });
+            }
+        }
+        addVideoListenerToTab()
+            .catch(console.error);
+    }, [startTime, endTime, enableLoopState])
 
     const getCurrentTime = async () => {
         let time;
@@ -41,23 +81,6 @@ const Looper = () => {
         time = result[0].result.currentTime;
         return time;
     }
-    const setCurrentTime = async (time) => {
-        const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-        for (let i = 0; i < tabs.length; i++) {
-            chrome.scripting.executeScript({
-                target: { tabId: tabs[i].id },
-                func: (time) => {
-                    var streams = document.getElementsByTagName('video');
-                    for (var i = 0; i < streams.length; i++) {
-                        if (streams[i].readyState === 4 && !streams[i].paused && !streams[i].ended) {
-                            streams[i].currentTime = time;
-                        }
-                    }
-                },
-                args: [time]
-            });
-        }
-    }
 
     const handleSetCurrentTimeAsStartTime = useCallback(async () => {
         try {
@@ -78,36 +101,13 @@ const Looper = () => {
         }
     }, []);
 
-    const checkLoop = async () => {
-        if (!enableLoopState || editingVideoState) return;
-        if (parseFloat(startTime) >= parseFloat(endTime)) return;
-        try {
-            const currentTime = await getCurrentTime();
-            if (currentTime >= endTime || currentTime < startTime) {
-                setEditingVideoState(true);
-                await setCurrentTime(parseFloat(startTime));
-                setEditingVideoState(false);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    useEffect(() => {
-        const interval = setIntervalAsync(async () => {
-            checkLoop();
-        }, 100);
-        return () => clearIntervalAsync(interval);
-    }, [enableLoopState, startTime, endTime]);
-
-
     return (
         <div className={styles.jumper}>
             <label>
                 Enable Loop
-                <input type="checkbox" checked={enableLoopState} onChange={(event) => {
-                    setEnableLoopState(event.target.checked);
-                }} />
+                <input type="checkbox"
+                    checked={enableLoopState}
+                    onChange={handleEnableLoopStateChange} />
             </label>
             <br />
             <button
