@@ -5,6 +5,9 @@ import React, {
 
 import addSeconds from '../../chromeActions/addSeconds';
 
+import CircleButton from '../CircleButton';
+import TextInput from '../TextInput';
+
 import styles from './Jumper.module.css';
 
 const Jumper = () => {
@@ -25,24 +28,14 @@ const Jumper = () => {
 
     return (
         <div className={styles.jumper}>
-            <button
-                className={styles.prevSkip}
-                onClick={handlePrevSkipClick}
-            >
-                {'<<'}
-            </button>
-            <input
+            <CircleButton label="<<" onClick={handlePrevSkipClick} />
+            <TextInput
                 className={styles.input}
                 type="text"
                 value={input}
                 onChange={handleInputChange}
             />
-            <button
-                className={styles.forwardSkip}
-                onClick={handleForwardSkipClick}
-            >
-                {'>>'}
-            </button>
+            <CircleButton label=">>" onClick={handleForwardSkipClick} />
         </div>
     );
 };

@@ -1,0 +1,11 @@
+.input {
+    all: unset;
+    box-sizing: border-box;
+
+    border-radius: 2rem;
+    background: #e8eef8;
+    box-shadow: inset 4px 4px 8px #bcc1c9,
+        inset -4px -4px 8px #fbffff;
+    width: 9rem;
+    height: 3rem;
+}
