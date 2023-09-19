@@ -6,23 +6,19 @@ import React, {
 
 const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/fixed');
 import styles from './Looper.module.css';
+import { getCurrentTime, addVideoListenerToTab } from '../../chromeActions/manageLooper';
+import { updateLocalStorage } from '../../chromeActions/localStorageUtil';
 
 const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
 const TABID = tabs[0].id;
 
 const getInitalState = async () => {
     let { LooperStartTime, LooperEndTime, LooperLoopState } = await chrome.storage.local.get(['LooperStartTime', 'LooperEndTime', 'LooperLoopState']);
-    let result = [0, 0, false];
-    if (LooperStartTime && LooperStartTime[TABID]) {
-        result[0] = LooperStartTime[TABID];
-    }
-    if (LooperEndTime && LooperEndTime[TABID]) {
-        result[1] = LooperEndTime[TABID];
-    }
-    if (LooperLoopState && LooperLoopState[TABID]) {
-        result[2] = LooperLoopState[TABID];
-    }
-    return result;
+    return [
+        LooperStartTime?.[TABID] || 0,
+        LooperEndTime?.[TABID] || 0,
+        LooperLoopState?.[TABID] || false,
+    ];
 }
 const [initalStartTime, initalEndTime, initalEnableLoopState] = await getInitalState();
 
@@ -32,85 +28,31 @@ const Looper = () => {
     const [startTime, setStartTime] = useState(initalStartTime);
     const [endTime, setEndTime] = useState(initalEndTime);
 
-
-
     const handleStartTimeChange = useCallback(async (event) => {
         setStartTime(event.target.value);
-        let { LooperStartTime } = await chrome.storage.local.get(['LooperStartTime']);
-        chrome.storage.local.set({ ['LooperStartTime']: { ...LooperStartTime, [TABID]: event.target.value } });
+        updateLocalStorage('LooperStartTime', event.target.value, TABID);
     }, []);
 
     const handleEndTimeChange = useCallback(async (event) => {
         setEndTime(event.target.value);
-        let { LooperEndTime } = await chrome.storage.local.get(['LooperEndTime']);
-        chrome.storage.local.set({ ['LooperEndTime']: { ...LooperEndTime, [TABID]: event.target.value } });
+        updateLocalStorage('LooperEndTime', event.target.value, TABID);
     }, []);
 
     const handleEnableLoopStateChange = useCallback(async (event) => {
         setEnableLoopState(event.target.checked);
-        let { LooperLoopState } = await chrome.storage.local.get(['LooperLoopState']);
-        chrome.storage.local.set({ ['LooperLoopState']: { ...LooperLoopState, [TABID]: event.target.checked } });
+        updateLocalStorage('LooperLoopState', event.target.checked, TABID);
     }, []);
 
-
-    const addVideoListenerFunction = (startTime, endTime, enableLoopState) => {
-        startTime = parseFloat(startTime);
-        endTime = parseFloat(endTime);
-        if (!enableLoopState || startTime >= endTime) {
-            VideoListenerLoop = () => { };
-            return;
-        }
-        VideoListenerLoop = () => {
-            const videoEls = document.getElementsByTagName('video');
-            for (let i = 0; i < videoEls.length; i++) {
-                if (videoEls[i].readyState >= 2) {
-                    if (videoEls[i].currentTime < startTime || videoEls[i].currentTime > endTime) {
-                        videoEls[i].currentTime = startTime;
-                    }
-                }
-            }
-            requestAnimationFrame(VideoListenerLoop);
-        };
-        VideoListenerLoop();
-    }
-
     useEffect(() => {
-        const addVideoListenerToTab = async () => {
-            chrome.scripting.executeScript({
-                target: { tabId: TABID },
-                func: addVideoListenerFunction,
-                args: [startTime, endTime, enableLoopState]
-            });
-        }
-        addVideoListenerToTab()
+        addVideoListenerToTab(TABID, startTime, endTime, enableLoopState)
             .catch(console.error);
     }, [startTime, endTime, enableLoopState])
 
-    const getCurrentTime = async () => {
-        let time;
-        const result = await chrome.scripting.executeScript({
-            target: { tabId: TABID },
-            func: () => {
-                const videoEls = document.getElementsByTagName('video');
-                for (let i = 0; i < videoEls.length; i++) {
-                    if (videoEls[i].readyState === 4) {
-                        return {
-                            currentTime: videoEls[i].currentTime
-                        };
-                    }
-                }
-            },
-        });
-        time = result[0].result.currentTime;
-        return time;
-    }
-
     const handleSetCurrentTimeAsStartTime = useCallback(async () => {
         try {
-            const time = await getCurrentTime();
+            const time = await getCurrentTime(TABID);
             setStartTime(time);
-            let { LooperStartTime } = await chrome.storage.local.get(['LooperStartTime']);
-            chrome.storage.local.set({ ['LooperStartTime']: { ...LooperStartTime, [TABID]: time } });
+            updateLocalStorage('LooperStartTime', time, TABID);
         } catch (err) {
             console.log(err)
         }
@@ -119,10 +61,9 @@ const Looper = () => {
 
     const handleSetCurrentTimeAsEndTime = useCallback(async () => {
         try {
-            const time = await getCurrentTime();
+            const time = await getCurrentTime(TABID);
             setEndTime(time);
-            let { LooperEndTime } = await chrome.storage.local.get(['LooperEndTime']);
-            chrome.storage.local.set({ ['LooperEndTime']: { ...LooperEndTime, [TABID]: time } });
+            updateLocalStorage('LooperEndTime', time, TABID);
         } catch (err) {
             console.log(err)
         }
