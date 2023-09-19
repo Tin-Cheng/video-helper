@@ -1,3 +1,7 @@
+import getActiveTab from './getActiveTab';
+
+
+
 /**
  * 
  * @param tabId 
@@ -17,13 +21,7 @@ async function 揀咗個VideoElement先(tabId) {
     })
 }
 
-async function getTabs() {
-    return await new Promise((resolve, reject) => {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            resolve(tabs);
-        });
-    });
-}
+
 
 /**
  * 
@@ -31,7 +29,7 @@ async function getTabs() {
  */
 export default async function addSeconds(tabId, value) {
     if (tabId === undefined) {
-        const [{ id: firstTabId }] = await getTabs();
+        const [{ id: firstTabId }] = await getActiveTab();
         tabId = firstTabId;
     }
     揀咗個VideoElement先(tabId);

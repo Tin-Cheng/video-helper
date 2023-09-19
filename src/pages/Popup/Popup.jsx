@@ -31,7 +31,6 @@ const Popup = () => {
                     }
                 },
             }, (result) => {
-                console.log(result[0].result);
                 setPlaybackRate(result[0].result.playbackRate);
                 setPreservesPitchState(result[0].result.preservesPitch)
             });

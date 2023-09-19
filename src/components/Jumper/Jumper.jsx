@@ -11,6 +11,12 @@ import TextInput from '../TextInput';
 import styles from './Jumper.module.css';
 
 const Jumper = () => {
+
+    const defaultJumpTime = '85';
+    const getJumpTime = () => {
+
+    }
+
     const [input, setInput] = useState('85');
 
     const handleInputChange = useCallback((event) => {
