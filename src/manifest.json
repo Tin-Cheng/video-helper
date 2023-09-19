@@ -46,10 +46,20 @@
     "scripting",
     "activeTab",
     "tabs",
-    "storage"
+    "storage",
+    "commands"
   ],
   "host_permissions": [
     "http://*/",
     "https://*/"
-  ]
+  ],
+  "commands": {
+    "toggle-feature-loop": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Toggle feature foo"
+    }
+  }
 }

@@ -97,7 +97,7 @@ export const onClickChangeLoopState = async (tabId) => {
         const [{ id: firstTabId }] = await getActiveTab();
         tabId = firstTabId;
     }
-    let [startTime, endTime, loopState] = [getLooperStartTime(tabId), getLooperEndTime(tabId), getLooperLoopState(tabId)]
+    let [startTime, endTime, loopState] = [await getLooperStartTime(tabId), await getLooperEndTime(tabId), await getLooperLoopState(tabId)]
     loopState = !loopState;
     await updateLocalStorage('LooperLoopState', loopState, tabId);
     await addVideoListenerToTab(tabId, startTime, endTime, loopState);
