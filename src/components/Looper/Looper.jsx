@@ -4,7 +4,7 @@ import React, {
     useEffect,
 } from 'react';
 
-const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/fixed');
+//const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/fixed');
 import styles from './Looper.module.css';
 import { getCurrentTime, addVideoListenerToTab } from '../../chromeActions/manageLooper';
 import { updateLocalStorage } from '../../chromeActions/localStorageUtil';

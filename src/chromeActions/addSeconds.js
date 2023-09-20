@@ -1,4 +1,5 @@
 import getActiveTab from './getActiveTab';
+import { updateLocalStorage } from './localStorageUtil';
 
 
 
@@ -8,7 +9,6 @@ import getActiveTab from './getActiveTab';
  * @returns {Promise}
  */
 async function 揀咗個VideoElement先(tabId) {
-    console.log(chrome.storage);
     return chrome.scripting.executeScript({
         target: { tabId },
         func: () => {
@@ -17,7 +17,7 @@ async function 揀咗個VideoElement先(tabId) {
             };
         }
     }, async (result) => {
-        console.log('1', result[0].result);
+        //console.log('1', result[0].result);
     })
 }
 
@@ -40,4 +40,31 @@ export default async function addSeconds(tabId, value) {
         },
         args: [value]
     });
+}
+
+const getJumpTime = async (tabId) => {
+    if (tabId === undefined) {
+        const [{ id: firstTabId }] = await getActiveTab();
+        tabId = firstTabId;
+    }
+    let { JumpTime } = await chrome.storage.local.get(['JumpTime']);
+    return JumpTime?.[tabId] || 85;
+}
+
+export const onClickJumpForward = async (tabId) => {
+    if (tabId === undefined) {
+        const [{ id: firstTabId }] = await getActiveTab();
+        tabId = firstTabId;
+    }
+    let [JumpTime] = [await getJumpTime(tabId)]
+    await addSeconds(tabId, parseFloat(JumpTime));
+}
+
+export const onClickJumpBackward = async (tabId) => {
+    if (tabId === undefined) {
+        const [{ id: firstTabId }] = await getActiveTab();
+        tabId = firstTabId;
+    }
+    let [JumpTime] = [await getJumpTime(tabId)]
+    await addSeconds(tabId, -parseFloat(JumpTime));
 }

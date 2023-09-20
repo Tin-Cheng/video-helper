@@ -4,32 +4,38 @@ import React, {
 } from 'react';
 
 import addSeconds from '../../chromeActions/addSeconds';
+import { updateLocalStorage } from '../../chromeActions/localStorageUtil';
 
 import CircleButton from '../CircleButton';
 import TextInput from '../TextInput';
 
 import styles from './Jumper.module.css';
 
+const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+const TABID = tabs[0].id;
+
+const getInitalState = async () => {
+    let { JumpTime } = await chrome.storage.local.get(['JumpTime']);
+    return [
+        JumpTime?.[TABID] || 85
+    ];
+}
+const [initalJumpTime] = await getInitalState();
+
 const Jumper = () => {
-
-    const defaultJumpTime = '85';
-    const getJumpTime = () => {
-
-    }
-
-    const [input, setInput] = useState('85');
+    const [input, setInput] = useState(initalJumpTime);
 
     const handleInputChange = useCallback((event) => {
         setInput(event.target.value);
+        updateLocalStorage('JumpTime', event.target.value, TABID);
     }, []);
 
     const handlePrevSkipClick = useCallback(() => {
-        // chromeAgents.
-        addSeconds(undefined, -parseFloat(input));
+        addSeconds(TABID, -parseFloat(input));
     }, [input]);
 
     const handleForwardSkipClick = useCallback(() => {
-        addSeconds(undefined, parseFloat(input));
+        addSeconds(TABID, parseFloat(input));
     }, [input]);
 
     return (

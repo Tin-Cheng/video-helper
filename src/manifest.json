@@ -56,10 +56,24 @@
   "commands": {
     "toggle-feature-loop": {
       "suggested_key": {
-        "default": "Ctrl+Shift+L",
-        "mac": "Command+Shift+L"
+        "default": "Ctrl+Shift+P",
+        "mac": "Command+Shift+P"
       },
       "description": "Toggle feature foo"
+    },
+    "toggle-feature-jump-forward": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+O",
+        "mac": "Command+Shift+O"
+      },
+      "description": "Toggle feature jump forward"
+    },
+    "toggle-feature-jump-backward": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+I",
+        "mac": "Command+Shift+I"
+      },
+      "description": "Toggle feature jump backward"
     }
   }
 }
