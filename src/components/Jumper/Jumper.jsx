@@ -16,8 +16,9 @@ const TABID = tabs[0].id;
 
 const getInitalState = async () => {
     let { JumpTime } = await chrome.storage.local.get(['JumpTime']);
+    let { DefaultJumpTime } = await chrome.storage.sync.get(['DefaultJumpTime']);
     return [
-        JumpTime?.[TABID] || 85
+        JumpTime?.[TABID] || DefaultJumpTime.value
     ];
 }
 const [initalJumpTime] = await getInitalState();

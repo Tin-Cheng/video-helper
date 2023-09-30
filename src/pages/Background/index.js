@@ -1,8 +1,8 @@
 import { onClickChangeLoopState } from '../../chromeActions/manageLooper';
 import { onClickJumpForward, onClickJumpBackward } from '../../chromeActions/addSeconds';
+import init from '../../chromeActions/init';
 
-console.log('This is the background page.');
-console.log('Put the background scripts here.');
+init();
 chrome.commands.onCommand.addListener(async (command) => {
     if (command === "toggle-feature-loop") {
         await onClickChangeLoopState(undefined);

@@ -4,7 +4,6 @@ import './Popup.css';
 import {
     changePlayBackRate,
     getCurrentTabs,
-    addSeconds,
 } from './util.js';
 
 import Jumper from '../../components/Jumper/Jumper';
@@ -13,7 +12,6 @@ import Looper from '../../components/Looper/Looper';
 const Popup = () => {
     const [playbackRate, setPlaybackRate] = useState(1);
     const [preservesPitchState, setPreservesPitchState] = useState(false);
-    const [skipSeconds, setSkipSeconds] = useState(85);
 
     useEffect(() => {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {

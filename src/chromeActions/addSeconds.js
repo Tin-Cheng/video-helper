@@ -48,7 +48,8 @@ const getJumpTime = async (tabId) => {
         tabId = firstTabId;
     }
     let { JumpTime } = await chrome.storage.local.get(['JumpTime']);
-    return JumpTime?.[tabId] || 85;
+    let { DefaultJumpTime } = await chrome.storage.sync.get(['DefaultJumpTime']);
+    return JumpTime?.[tabId] || DefaultJumpTime.value;
 }
 
 export const onClickJumpForward = async (tabId) => {
