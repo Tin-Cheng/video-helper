@@ -8,12 +8,12 @@ import { updateLocalStorage } from './localStorageUtil';
  * @param tabId 
  * @returns {Promise}
  */
-async function 揀咗個VideoElement先(tabId) {
+async function 揀咗個VideoElements先(tabId) {
     return chrome.scripting.executeScript({
         target: { tabId },
         func: () => {
             window.__VIDEO_CONTROLLER_TEMP__ = {
-                selectedVideoElement: document.getElementsByTagName('video')[0],
+                selectedVideoElements: document.getElementsByTagName('video'),
             };
         }
     }, async (result) => {
@@ -32,11 +32,13 @@ export default async function addSeconds(tabId, value) {
         const [{ id: firstTabId }] = await getActiveTab();
         tabId = firstTabId;
     }
-    揀咗個VideoElement先(tabId);
+    揀咗個VideoElements先(tabId);
     return chrome.scripting.executeScript({
         target: { tabId },
         func: async (value) => {
-            window.__VIDEO_CONTROLLER_TEMP__.selectedVideoElement.currentTime += value;
+            for (let videoElement of window.__VIDEO_CONTROLLER_TEMP__.selectedVideoElements) {
+                videoElement.currentTime += value;
+            }
         },
         args: [value]
     });
