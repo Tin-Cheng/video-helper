@@ -1,7 +1,4 @@
 import getActiveTab from './getActiveTab';
-import { updateLocalStorage } from './localStorageUtil';
-
-
 
 /**
  * 
@@ -16,8 +13,6 @@ async function 揀咗個VideoElements先(tabId) {
                 selectedVideoElements: document.getElementsByTagName('video'),
             };
         }
-    }, async (result) => {
-        //console.log('1', result[0].result);
     })
 }
 
