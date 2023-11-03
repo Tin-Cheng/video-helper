@@ -1,0 +1,12 @@
+.looper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input {
+    width: 3.5rem;
+    text-align: center;
+    font-size: 1rem;
+    margin: 0 0.5rem;
+}

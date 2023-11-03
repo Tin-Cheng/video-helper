@@ -1,0 +1,19 @@
+.jumper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prevSkip,
+.forwardSkip {
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+}
+
+.input {
+    /* width: 3.5rem; */
+    text-align: center;
+    font-size: 1rem;
+    margin: 0 1rem;
+}
