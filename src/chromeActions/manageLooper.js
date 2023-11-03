@@ -4,6 +4,7 @@ import { updateLocalStorage } from './localStorageUtil';
 const addVideoListenerFunction = (startTime, endTime, enableLoopState) => {
     startTime = parseFloat(startTime);
     endTime = parseFloat(endTime);
+    var VideoListenerLoop = () => { };
     if (!enableLoopState || startTime >= endTime) {
         VideoListenerLoop = () => { };
         return;

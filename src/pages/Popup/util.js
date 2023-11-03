@@ -16,7 +16,7 @@ export async function getCurrentTabs() {
     return tabs;
 }
 
-export async function handleSkipClick(e) {
+export async function handleSkipClick() {
     var tabs = await getCurrentTabs();
     for (var i = 0; i < tabs.length; i++) {
         chrome.scripting.executeScript({
@@ -52,7 +52,7 @@ export function changePlayBackRate(rate) {
     }
 }
 
-export async function handleRateRangeChange(e) {
+export async function handleRateRangeChange() {
     setPlayBackRateInput(getPlayBackRateRange())
     var tabs = await getCurrentTabs();
     for (var i = 0; i < tabs.length; i++) {
@@ -64,7 +64,7 @@ export async function handleRateRangeChange(e) {
     }
 }
 
-export async function handleRateInputChange(e) {
+export async function handleRateInputChange() {
     setPlayBackRateRange(getPlayBackRateInput())
     var tabs = await getCurrentTabs();
     for (var i = 0; i < tabs.length; i++) {
