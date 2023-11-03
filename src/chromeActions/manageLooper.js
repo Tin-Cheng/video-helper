@@ -4,12 +4,11 @@ import { updateLocalStorage } from './localStorageUtil';
 const addVideoListenerFunction = (startTime, endTime, enableLoopState) => {
     startTime = parseFloat(startTime);
     endTime = parseFloat(endTime);
-    var VideoListenerLoop = () => { };
-    if (!enableLoopState || startTime >= endTime) {
-        VideoListenerLoop = () => { };
-        return;
-    }
-    VideoListenerLoop = () => {
+
+    window.videoListenerLoop = () => {
+        if (!enableLoopState || startTime >= endTime) {
+            return;
+        }
         const videoEls = document.getElementsByTagName('video');
         for (let i = 0; i < videoEls.length; i++) {
             if (videoEls[i].readyState >= 2) {
@@ -18,9 +17,9 @@ const addVideoListenerFunction = (startTime, endTime, enableLoopState) => {
                 }
             }
         }
-        requestAnimationFrame(VideoListenerLoop);
+        requestAnimationFrame(window.videoListenerLoop);
     };
-    VideoListenerLoop();
+    window.videoListenerLoop();
 }
 
 const getLooperStartTime = async (tabId) => {
