@@ -1,11 +1,11 @@
 {
-  "name": "chrome-extension-boilerplate-react",
-  "version": "5.0.4",
-  "description": "A chrome extension boilerplate built with React 18, Webpack 5, and Webpack Dev Server 4",
+  "name": "video-helper",
+  "version": "1.0.0",
+  "description": "Helps adjust playback spped, enable AB loop, and jump forward / backward.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lxieyang/chrome-extension-boilerplate-react.git"
+    "url": "https://github.com/Tin-Cheng/video-helper"
   },
   "scripts": {
     "build": "node utils/build.js",

@@ -5,7 +5,7 @@ import getActiveTab from './getActiveTab';
  * @param tabId 
  * @returns {Promise}
  */
-async function 揀咗個VideoElements先(tabId) {
+async function getVideoElements(tabId) {
     return chrome.scripting.executeScript({
         target: { tabId },
         func: () => {
@@ -16,8 +16,6 @@ async function 揀咗個VideoElements先(tabId) {
     })
 }
 
-
-
 /**
  * 
  * @param tabId 
@@ -27,7 +25,7 @@ export default async function addSeconds(tabId, value) {
         const [{ id: firstTabId }] = await getActiveTab();
         tabId = firstTabId;
     }
-    揀咗個VideoElements先(tabId);
+    getVideoElements(tabId);
     return chrome.scripting.executeScript({
         target: { tabId },
         func: async (value) => {

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import './Popup.css';
 
+import './Popup.css';
 import {
     changePlayBackRate,
     getCurrentTabs,

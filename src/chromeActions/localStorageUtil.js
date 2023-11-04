@@ -3,8 +3,6 @@ export const updateLocalStorage = async (key, value, tabId) => {
     return chrome.storage.local.set({ [key]: { ...obj, [tabId]: value } });
 }
 
-
-
 export const updateSyncStorage = async (key, value) => {
     return chrome.storage.sync.set({ [key]: { value } });
 }

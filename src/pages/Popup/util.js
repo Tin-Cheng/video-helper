@@ -1,6 +1,7 @@
 export function getSkipSeconds() {
     return parseInt(document.getElementById('skip_input').value);
 }
+
 export function addSeconds(s) {
     var streams = document.getElementsByTagName('video');
     for (var i = 0; i < streams.length; i++) {
@@ -30,6 +31,7 @@ export async function handleSkipClick() {
 export function getPlayBackRateRange() {
     return Math.pow(2, parseFloat(document.getElementById('rate_Range').value));
 }
+
 export function getPlayBackRateInput() {
     return parseFloat(document.getElementById('rate_input').value);
 }
@@ -41,7 +43,6 @@ export function setPlayBackRateInput(r) {
 export function setPlayBackRateRange(r) {
     document.getElementById('rate_Range').value = Math.log2(r);
 }
-
 
 export function changePlayBackRate(rate) {
     var streams = document.getElementsByTagName('video');

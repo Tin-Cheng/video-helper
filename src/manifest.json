@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Video-Helper",
-  "description": "Helps adjust plauback speed, AB loop and jump forward / backward",
+  "description": "Helps adjust playback speed, enable AB loop and jump forward / backward",
   "options_page": "options.html",
   "background": {
     "service_worker": "background.bundle.js"

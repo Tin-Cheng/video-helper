@@ -11,11 +11,12 @@ test('options edit default jump time', async ({ context, page, extensionId }) =>
     await expect(page_one.getByRole('textbox').first()).toHaveValue(JUMP_TIME.toString());
 });
 
-
 test('popup test', async ({ page, extensionId }) => {
+    await page.waitForTimeout(100);
     await page.goto(`chrome-extension://${extensionId}/popup.html`);
     await expect(page.locator('h1')).toHaveText('Video Controller');
 });
+
 //Playwright cannot Invoke chrome extension using the keyboard shortcut yet
 //Playwright cannot interact pop up menu while stay on same tab yet
 /*
