@@ -2,7 +2,7 @@ import { test, expect } from './fixture';
 
 test('options edit default jump time', async ({ context, page, extensionId }) => {
     const JUMP_TIME = 5;
-    await page.goto(`chrome-extension://${extensionId}/options.html`);
+    await page.waitForTimeout(50);
     await page.goto(`chrome-extension://${extensionId}/options.html`);
     await expect(page.locator('h1')).toHaveText('Options Page');
     await page.getByRole('textbox').first().fill(JUMP_TIME.toString());
