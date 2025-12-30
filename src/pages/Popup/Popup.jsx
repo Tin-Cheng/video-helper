@@ -83,7 +83,7 @@ const Popup = () => {
             <Jumper />
             <div>
                 <label>Playback Rate</label>
-                <input type="number" min={0.0625} max={16} onChange={handleRateInputChange} value={playbackRate} />
+                <input type="number" min={0} max={16} step={1} onChange={handleRateInputChange} value={playbackRate} />
                 <input type="range" min={-4} max={4} step={0.01} onChange={handleRateRangeChange} value={Math.log2(playbackRate)} />
             </div>
             <label>
